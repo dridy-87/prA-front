@@ -6,7 +6,7 @@
         min-width="700"
         rounded="lg"
       >
-      {{ store.sessionID }}
+       sessionID: {{ store.sessionID }}
         <div class="d-flex text-subtitle-1 text-medium-emphasis">ID</div>
         <v-text-field
             density="compact"
