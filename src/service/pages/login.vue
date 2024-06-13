@@ -71,6 +71,18 @@
             Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
           </a>
         </v-card-text>
+        <v-btn
+          class="mb-8"
+          color="blue"
+          size="large"
+          variant="tonal"
+          block
+
+          @click="func.getBoards"
+        >
+          Board List
+        </v-btn>
+
       </v-card>
     </div>
   </template>
@@ -80,6 +92,8 @@
     import CryptoJS from "crypto-js";
     import { reactive } from "vue";
     import { useUserStore } from '@service/store'
+    import { authAxios, testAxios }  from '@system/utils/request'
+
 
     const store = useUserStore()
     const state = reactive({
@@ -88,16 +102,11 @@
     })
     const func = {
         login: ()=> {
-            axios.post('/api/login', {
-                    username: state.username,
-                    password:CryptoJS.SHA256(state.password).toString()
-                },
-                {   
-                    headers:{
-                    'Content-Type': 'multipart/form-data' 
-                    }
-                }
-            ).then((res)=>{
+          const formData = new FormData();
+          formData.append('username', state.username);
+          formData.append('password', CryptoJS.SHA256(state.password).toString());
+          authAxios.post('/api/login', formData)
+            .then((res)=>{
                 // alert(JSON.stringify(res.data))
 
                 useUserStore().setSession(res.data)
@@ -105,11 +114,19 @@
             })
         },
         logout:()=>{
-            axios.get('/api/logout').then(res=>{
+          authAxios.get('/api/logout').then(res=>{
                 console.log(res.data)
                 useUserStore().logout()
             })
-        }
+        },
+        getBoards:()=>{
+          testAxios.get('/api/boards').then(res=>{
+                console.log(res.data)
+
+            })
+
+        },
+
     }
 
 </script>
