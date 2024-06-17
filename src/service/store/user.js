@@ -32,7 +32,8 @@ export const useUserStore = defineStore('userStore', {
         })
       },
       setSession(payload){
-        this.sessionID = payload.session
+        console.log(payload)
+        this.sessionID = payload.data.session
         this.isAuthenticated = true
       },
       setToken(token, expiredTime) {
